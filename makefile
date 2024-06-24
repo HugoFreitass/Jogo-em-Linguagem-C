@@ -1,5 +1,5 @@
-# Variáveis
 CC = gcc
+
 all: tetris
 
 tetris: tetris.o libtetris.o
