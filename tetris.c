@@ -1,34 +1,35 @@
 #include <stdio.h>
-#include <ncurses.h> // Biblioteca extra necessária para ncurses
+#include <ncurses.h>
+#include <time.h>
+#include <stdlib.h>
 #include "libtetris.h"
 
-// gcc libtetris.h
-// gcc -c libtetris.c -o libtetris.o
-// gcc tetris.c -o tetris libtetris.o -lncurses
-// ./tetris
-
 int main() {
-    int ch, matrizFonte[22][22];
+    int ch, matrizFonte[22][22] = {0};
     char tabuleiro[22][22] = {0};
+    struct peca pecas[7];
+    // CRIAR vetor para armazenar peças
     
     initscr();            // Inicia a janela ncurses
     cbreak();             // Desabilita o buffer da linha
     noecho();             // Não exibe a tecla pressionada
     keypad(stdscr, TRUE); // Habilita a captura de teclas especiais
 
+    geraPecas(pecas);     // Gera e salva as peças no vetor
+
+    imprimePeca(matrizFonte, pecas[6], 1, 4*2);
+
     geraTabuleiro(matrizFonte, tabuleiro);
 
     for(int l = 0; l < 22; l++){
         for(int c = 0; c < 22; c++){
-            printw("%c", tabuleiro[l][c]);
+            mvaddch(l, c, tabuleiro[l][c]);
         }
         printw("\n");
     }
+   
     refresh();
 
-
-    // printw("Pressione qualquer tecla...\n");
-    // refresh();            // Atualiza a tela
 
     //Possível transformar em uma função movimento(tecla)
     while ((ch = getch()) != 'q') {
