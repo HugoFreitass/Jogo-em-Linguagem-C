@@ -31,6 +31,14 @@ void imprimePeca(int fonte[22][22], peca pecaAtual, int linRef, int colRef){
 
 }
 
+void limpaPeca(int fonte[22][22], peca pecaAtual, int linRef, int colRef){
+    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+        for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
+            fonte[l][c] = 0;
+        }
+    }
+}
+
 // Gera a posicao inicial da peça
 static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int fimLinDois){
     peca pecaGerada;
