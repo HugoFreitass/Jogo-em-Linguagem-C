@@ -65,14 +65,18 @@ static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int 
             pecaGerada.grid2[l][c] = 0;
         }
     }
-    for(int i = inicioLinUm/2 ; i <= fimLinUm/2; i++){
-        for(int j=2;j<=3;j++){
-            pecaGerada.grid2[i][j] = idPeca+1;
+    if(inicioLinUm>=0){
+        for(int i = inicioLinUm/2 ; i <= fimLinUm/2; i++){
+            for(int j=2;j<=3;j++){
+                pecaGerada.grid2[i][j] = idPeca+1;
+            }
         }
     }
-    for(int i = inicioLinDois/2 ; i <= fimLinDois/2; i++){
-        for(int j=0;j<=1;j++){
-            pecaGerada.grid2[i][j] = idPeca+1;
+    if(inicioLinDois>=0){
+        for(int i = inicioLinDois/2 ; i <= fimLinDois/2; i++){
+            for(int j=0;j<=1;j++){
+                pecaGerada.grid2[i][j] = idPeca+1;
+            }
         }
     }
     
