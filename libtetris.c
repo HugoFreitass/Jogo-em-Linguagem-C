@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include "libtetris.h"
 
+/*
 //#define bloco1 '\xe2\x96\x88'
-#define bloco1  '\xFE' //'\xdb'; //09608; //\u2588'
+#define bloco1 '\xFE' //'\xdb'; //09608; //\u2588'
 #define bloco2 ' ' 
 
 
@@ -13,15 +14,15 @@ void geraTabuleiro(int fonte[22][22], char tabuleiro[22][22]){
     
     for(int l = 0; l < 22; l++){
         for(int c = 0; c < 22; c++){
-            if(l != 0 && l != 21 &&  c != 0 && c!= 21 && fonte[l][c] == 0) tabuleiro[l][c] = bloco2;
-            if(l != 0 && l != 21 &&  c != 0 && c!= 21 && fonte[l][c] == 2) tabuleiro[l][c] = bloco1;
+            if(l != 0 && l != 21 &&  c != 0 && c!= 21 && fonte[l][c] == 0) tabuleiro[l][c] = ' ';
+            if(l != 0 && l != 21 &&  c != 0 && c!= 21 && fonte[l][c] != 0) tabuleiro[l][c] = '*';
             if((l == 0 || l == 21) && c != 0 && c!= 21) tabuleiro[l][c] = '-';
             if(c == 0 || c == 21) tabuleiro[l][c] = '|';
         }
     }
 }
-
-void imprimePeca(int fonte[22][22], peca pecaAtual, int linRef, int colRef){
+*/
+void imprimePeca(int fonte[20][20], peca pecaAtual, int linRef, int colRef){
 
     for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
@@ -31,7 +32,7 @@ void imprimePeca(int fonte[22][22], peca pecaAtual, int linRef, int colRef){
 
 }
 
-void limpaPeca(int fonte[22][22], peca pecaAtual, int linRef, int colRef){
+void limpaPeca(int fonte[20][20], peca pecaAtual, int linRef, int colRef){
     for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
             fonte[l][c] = 0;
@@ -63,42 +64,42 @@ static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int 
 
 void geraPecas(peca pecasGeradas[]){
 
-    for(int idPeca = 0; idPeca <= 6; idPeca++){
+    for(int idPeca = 1; idPeca <= 7; idPeca++){
         peca pecaGerada;
-        pecaGerada.orientacao = 1;
+        pecaGerada.orientacao = 0;
 
         switch (idPeca){
-        case 0:
+        case 1:
             //  00
             //000000
             pecaGerada = configuraPeca(2, 3, 0, 5);
             break;
-        case 1:
+        case 2:
             //  0000
             //  0000
             pecaGerada = configuraPeca(2, 5, 2, 5);
             break;
-        case 2:
+        case 3:
             //
             //00000000
             pecaGerada = configuraPeca(-1, -1, 0, 7);
             break;
-        case 3:
+        case 4:
             //    00
             //000000
             pecaGerada = configuraPeca(4, 5, 0, 5);
             break;
-        case 4:
+        case 5:
             //00
             //000000
             pecaGerada = configuraPeca(0, 1, 0, 5);
             break;
-        case 5:
+        case 6:
             //0000
             //  0000
             pecaGerada = configuraPeca(0, 3, 2, 5);
             break;
-        case 6:
+        case 7:
             //  0000
             //0000
             pecaGerada = configuraPeca(2, 5, 0, 3);

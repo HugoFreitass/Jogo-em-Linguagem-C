@@ -1,18 +1,39 @@
 #include <stdio.h>
 #include <ncurses.h>
 #include <time.h>
+#include <locale.h>
 #include <stdlib.h>
 #include "libtetris.h"
 
-//#define TAMANHO 22
-
-void mostraTabuleiro(char tabuleiro[22][22]){
-    for(int l = 0; l < 22; l++){
-        for(int c = 0; c < 22; c++){
-            mvaddch(l, c, tabuleiro[l][c]);
+void mostraTabuleiro(int fonte[20][20]){
+    printw("╔");
+    for(int i = 0; i < 20; i++){
+        printw("═");
+    }
+    printw("╗");
+    printw("\n");
+    for(int l = 0; l < 20; l++){
+        printw("║");
+        for(int c = 0; c < 20; c++){
+            int fonteN=fonte[l][c];
+            switch(fonteN){
+                case 0:
+                printw(" ");
+                break;
+                default:
+                printw("█");
+                break;
+            }
         }
+        printw("║");
         printw("\n");
     }
+    printw("╚");
+    for(int i = 0; i < 20; i++){
+        printw("═");
+    }
+    printw("╝");
+    printw("\n");
     refresh();
 }
 
@@ -20,7 +41,7 @@ void mostraTabuleiro(char tabuleiro[22][22]){
 // Precisa colocar restrição: só executar se não tiver bloco no caminho
     // *Coluna sempre deve ser ímpar, para respeitar a config. do tabuleiro
     // *É possível diminuir os argumentos dessa função declarando variáveis globais, verificar implicações
-void derrubaPeca(int fonte[22][22], char tabuleiro[22][22], peca pecas[7], int pecaAtual, int delay, int coluna){
+/*void derrubaPeca(int fonte[22][22], char tabuleiro[22][22], peca pecas[7], int pecaAtual, int delay, int coluna){
 
     for(int i = 1; i < 20; i++){
         //delay = delay != 0? delay : 550;
@@ -35,34 +56,34 @@ void derrubaPeca(int fonte[22][22], char tabuleiro[22][22], peca pecas[7], int p
         mostraTabuleiro(tabuleiro);
     }
 
-}
+}*/
 
 int main() {
-    int ch, matrizFonte[22][22] = {0};
-    char tabuleiro[22][22] = {0};
+    int ch, matrizFonte[20][20] = {0};
     peca pecas[7];
 
 //----------------------------------------------------------------------
 //Inicialização
-    
+    setlocale(LC_ALL, "");
     initscr();            // Inicia a janela ncurses
     cbreak();             // Desabilita o buffer da linha
     noecho();             // Não exibe a tecla pressionada
     keypad(stdscr, TRUE); // Habilita a captura de teclas especiais
 
-    geraPecas(pecas);     // Gera e salva as peças no vetor
-    geraTabuleiro(matrizFonte, tabuleiro);
-    mostraTabuleiro(tabuleiro);
+    //geraPecas(pecas);     // Gera e salva as peças no vetor
+    //geraTabuleiro(matrizFonte, tabuleiro);
+    mostraTabuleiro(matrizFonte);
+    
 
 
 //----------------------------------------------------------------------
 // Processos
 
-    derrubaPeca(matrizFonte, tabuleiro, pecas, 3, 550, 7);
+    //derrubaPeca(matrizFonte, tabuleiro, pecas, 3, 550, 7);
 
 //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
 // Transformar em uma função -> movimento(tecla)
-
+/*
     while ((ch = getch()) != 'q') {
         switch (ch) {
             case KEY_DOWN:
@@ -91,10 +112,10 @@ int main() {
         }
         refresh();        
     }
-
+*/
 //---------------------------------------------------------------------
 // Finalização
 
-    endwin();             // Finaliza o ncurses
+    //endwin();             // Finaliza o ncurses
     return 0;
 }
