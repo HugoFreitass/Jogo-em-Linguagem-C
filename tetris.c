@@ -2,17 +2,25 @@
 #include <ncurses.h>
 #include <time.h>
 #include <stdlib.h>
+#include <locale.h>
 #include "libtetris.h"
 
-//#define TAMANHO 22
 
-void mostraTabuleiro(char tabuleiro[22][22]){
-    for(int l = 0; l < 22; l++){
-        for(int c = 0; c < 22; c++){
-            mvaddch(l, c, tabuleiro[l][c]);
+void mostraTabuleiro(char tabuleiro[TAMANHO][TAMANHO]){
+    mvaddstr(0, 0,"╔");
+    for(int l = 0; l < TAMANHO; l++){
+        mvaddstr(l+1, 0,"║");
+        for(int c = 0; c < TAMANHO; c++){
+            mvaddstr(0, c+1,"═");
+            mvaddch(l+1, c+1, tabuleiro[l][c]);
+            mvaddstr(TAMANHO+1, c+1,"═");
         }
         printw("\n");
+        mvaddstr(l+1, TAMANHO+1,"║");
     }
+    mvaddstr(0, TAMANHO+1,"╗");
+    mvaddstr(TAMANHO+1, TAMANHO+1,"╝");
+    mvaddstr(TAMANHO+1, 0,"╚");
     refresh();
 }
 
@@ -20,7 +28,7 @@ void mostraTabuleiro(char tabuleiro[22][22]){
 // Precisa colocar restrição: só executar se não tiver bloco no caminho
     // *Coluna sempre deve ser ímpar, para respeitar a config. do tabuleiro
     // *É possível diminuir os argumentos dessa função declarando variáveis globais, verificar implicações
-void derrubaPeca(int fonte[22][22], char tabuleiro[22][22], peca pecas[7], int pecaAtual, int delay, int coluna){
+void derrubaPeca(int fonte[TAMANHO][TAMANHO], char tabuleiro[TAMANHO][TAMANHO], peca pecas[7], int pecaAtual, int delay, int coluna){
 
     for(int i = 1; i < 20; i++){
         //delay = delay != 0? delay : 550;
@@ -38,13 +46,13 @@ void derrubaPeca(int fonte[22][22], char tabuleiro[22][22], peca pecas[7], int p
 }
 
 int main() {
-    int ch, matrizFonte[22][22] = {0};
-    char tabuleiro[22][22] = {0};
+    int ch, matrizFonte[TAMANHO][TAMANHO] = {0};
+    char tabuleiro[TAMANHO][TAMANHO] = {0};
     peca pecas[7];
 
 //----------------------------------------------------------------------
 //Inicialização
-    
+    setlocale(LC_ALL, "");// Define o conjunto de caracteres para UTF-8
     initscr();            // Inicia a janela ncurses
     cbreak();             // Desabilita o buffer da linha
     noecho();             // Não exibe a tecla pressionada
@@ -64,7 +72,13 @@ int main() {
 // Transformar em uma função -> movimento(tecla)
 
     while ((ch = getch()) != 'q') {
+
         switch (ch) {
+            case KEY_UP:
+                // Gira
+                printw("Tecla espaço pressionada\n");
+                
+                break;
             case KEY_DOWN:
                 // Acelera
                 printw("Seta para baixo pressionada\n");
@@ -80,9 +94,6 @@ int main() {
                 printw("Seta para a direita pressionada\n");
 
                 break;
-
-                // Adicionar tecla para rotacionar
-
             case ' ':
                 // Cai de uma vez
                 printw("Tecla espaço pressionada\n");
