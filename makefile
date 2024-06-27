@@ -3,7 +3,7 @@ CC = gcc
 all: tetris
 
 tetris: tetris.o libtetris.o
-	$(CC) tetris.o -o tetris libtetris.o -lncursesw -D_XOPEN_SOURCE_EXTENDED
+	$(CC) tetris.o -o tetris libtetris.o -lncursesw
 
 libtetris.o: libtetris.c libtetris.h
 	$(CC) libtetris.h

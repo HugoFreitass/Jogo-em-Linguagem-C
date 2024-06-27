@@ -22,11 +22,12 @@ void geraTabuleiro(int fonte[22][22], char tabuleiro[22][22]){
     }
 }
 */
+
 void imprimePeca(int fonte[20][20], peca pecaAtual, int linRef, int colRef){
 
     for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            fonte[l][c] = pecaAtual.grid[j][k];
+            fonte[l][c] = pecaAtual.grid1[j][k];
         }
     }
 
@@ -41,68 +42,101 @@ void limpaPeca(int fonte[20][20], peca pecaAtual, int linRef, int colRef){
 }
 
 // Gera a posicao inicial da peça
-static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int fimLinDois){
+static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int fimLinDois, int idPeca){
     peca pecaGerada;
 
+    //1
     for(int l = 0; l < 2; l++){
         for(int c = 0; c < 8; c++){
-            pecaGerada.grid[l][c] = 0;
+            pecaGerada.grid1[l][c] = 0;
         }
     }
-
     for(int i = inicioLinUm ; i <= fimLinUm; i++){
-        pecaGerada.grid[0][i] = 2;
+        pecaGerada.grid1[0][i] = idPeca+1;
     }
 
     for(int i = inicioLinDois ; i <= fimLinDois; i++){
-        pecaGerada.grid[1][i] = 2;
+        pecaGerada.grid1[1][i] = idPeca+1;
+    }
+    
+    //2
+    for(int l = 0; l < 4; l++){
+        for(int c = 0; c < 4; c++){
+            pecaGerada.grid2[l][c] = 0;
+        }
+    }
+    for(int i = inicioLinUm/2 ; i <= fimLinUm/2; i++){
+        for(int j=2;j<=3;j++){
+            pecaGerada.grid2[i][j] = idPeca+1;
+        }
+    }
+    for(int i = inicioLinDois/2 ; i <= fimLinDois/2; i++){
+        for(int j=0;j<=1;j++){
+            pecaGerada.grid2[i][j] = idPeca+1;
+        }
+    }
+    
+
+    //3
+    for(int i = 7, j=0; i >= 0; i--, j++){
+        pecaGerada.grid3[0][i] = pecaGerada.grid1[1][j];
+        pecaGerada.grid3[1][i] = pecaGerada.grid1[0][j];
     }
 
+    //4
+    for(int k=0, l=3;k<4;k++,l--){
+        for(int i = 3, j=0; i >= 0; i--, j++){
+            pecaGerada.grid4[k][i] = pecaGerada.grid2[l][j];
+        }
+    }
     return pecaGerada;
 }
 
 
 void geraPecas(peca pecasGeradas[]){
 
-    for(int idPeca = 1; idPeca <= 7; idPeca++){
+    for(int idPeca = 0; idPeca < 7; idPeca++){
         peca pecaGerada;
-        pecaGerada.orientacao = 0;
+        pecaGerada.orientacao = 1;
 
         switch (idPeca){
+        case 0:
+            //001100
+            //111111
+
+            //11
+            //1111
+            pecaGerada = configuraPeca(2, 3, 0, 5, idPeca);
+            break;
         case 1:
-            //  00
-            //000000
-            pecaGerada = configuraPeca(2, 3, 0, 5);
+            //  0000
+            //  0000
+            pecaGerada = configuraPeca(2, 5, 2, 5, idPeca);
             break;
         case 2:
-            //  0000
-            //  0000
-            pecaGerada = configuraPeca(2, 5, 2, 5);
-            break;
-        case 3:
             //
             //00000000
-            pecaGerada = configuraPeca(-1, -1, 0, 7);
+            pecaGerada = configuraPeca(-1, -1, 0, 7, idPeca);
             break;
-        case 4:
+        case 3:
             //    00
             //000000
-            pecaGerada = configuraPeca(4, 5, 0, 5);
+            pecaGerada = configuraPeca(4, 5, 0, 5, idPeca);
             break;
-        case 5:
+        case 4:
             //00
             //000000
-            pecaGerada = configuraPeca(0, 1, 0, 5);
+            pecaGerada = configuraPeca(0, 1, 0, 5, idPeca);
+            break;
+        case 5:
+            //0000
+            //  0000
+            pecaGerada = configuraPeca(0, 3, 2, 5, idPeca);
             break;
         case 6:
-            //0000
-            //  0000
-            pecaGerada = configuraPeca(0, 3, 2, 5);
-            break;
-        case 7:
             //  0000
             //0000
-            pecaGerada = configuraPeca(2, 5, 0, 3);
+            pecaGerada = configuraPeca(2, 5, 0, 3, idPeca);
             break;
         }
 

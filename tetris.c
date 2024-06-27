@@ -36,7 +36,68 @@ void mostraTabuleiro(int fonte[20][20]){
     printw("\n");
     refresh();
 }
-
+void teste(peca pecas[7], int pecaAtual){
+    for(int l = 0; l < 2; l++){
+        for(int c = 0; c < 8; c++){
+            int fonteN=pecas[pecaAtual].grid1[l][c];
+            switch(fonteN){
+                case 0:
+                printw(" ");
+                break;
+                default:
+                printw("█");
+                break;
+            }
+        }
+        printw("\n");
+    }
+    printw("\n\n");
+    for(int l = 0; l < 4; l++){
+        for(int c = 0; c < 4; c++){
+            int fonteN=pecas[pecaAtual].grid2[l][c];
+            switch(fonteN){
+                case 0:
+                printw(" ");
+                break;
+                default:
+                printw("█");
+                break;
+            }
+        }
+        printw("\n");
+    }
+    printw("\n\n");
+    for(int l = 0; l < 2; l++){
+        for(int c = 0; c < 8; c++){
+            int fonteN=pecas[pecaAtual].grid3[l][c];
+            switch(fonteN){
+                case 0:
+                printw(" ");
+                break;
+                default:
+                printw("█");
+                break;
+            }
+        }
+        printw("\n");
+    }
+    printw("\n\n");
+    for(int l = 0; l < 4; l++){
+        for(int c = 0; c < 4; c++){
+            int fonteN=pecas[pecaAtual].grid4[l][c];
+            switch(fonteN){
+                case 0:
+                printw(" ");
+                break;
+                default:
+                printw("█");
+                break;
+            }
+        }
+        printw("\n");
+    }
+    refresh();
+}
 
 // Precisa colocar restrição: só executar se não tiver bloco no caminho
     // *Coluna sempre deve ser ímpar, para respeitar a config. do tabuleiro
@@ -59,7 +120,7 @@ void mostraTabuleiro(int fonte[20][20]){
 }*/
 
 int main() {
-    int ch, matrizFonte[20][20] = {0};
+    int ch=0, num=0, matrizFonte[20][20] = {0};
     peca pecas[7];
 
 //----------------------------------------------------------------------
@@ -70,12 +131,19 @@ int main() {
     noecho();             // Não exibe a tecla pressionada
     keypad(stdscr, TRUE); // Habilita a captura de teclas especiais
 
-    //geraPecas(pecas);     // Gera e salva as peças no vetor
-    //geraTabuleiro(matrizFonte, tabuleiro);
-    mostraTabuleiro(matrizFonte);
     
-
-
+    //geraTabuleiro(matrizFonte, tabuleiro);
+    //mostraTabuleiro(matrizFonte);
+    
+    geraPecas(pecas);     // Gera e salva as peças no vetor
+    while (true) {
+        clear();
+        teste(pecas, num);
+        num++;
+        num%=7;
+        delay_output(2550);
+        refresh();        
+    }
 //----------------------------------------------------------------------
 // Processos
 
@@ -116,6 +184,6 @@ int main() {
 //---------------------------------------------------------------------
 // Finalização
 
-    //endwin();             // Finaliza o ncurses
+    endwin();             // Finaliza o ncurses
     return 0;
 }
