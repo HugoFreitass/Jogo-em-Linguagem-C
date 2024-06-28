@@ -17,17 +17,33 @@ void geraTabuleiro(int fonte[TAMANHO][TAMANHO], char tabuleiro[TAMANHO][TAMANHO]
     }
 }
 
-void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
-    if(linRef + 2 <= TAMANHO && colRef + 8 <= TAMANHO){
-        for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
-            for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-                fonte[l][c] = pecaAtual.grid[j][k];
+int imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+    int conta = 0;
+    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+        for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
+            if(fonte[l][c] == 0 && pecaAtual.grid[j][k] != 0){
+                conta++;
             }
         }
     }
+
+    if(conta == 8){
+        for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+            for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
+                if(fonte[l][c] == 0){
+                    fonte[l][c] = pecaAtual.grid[j][k];
+                }
+            }
+        }
+
+        return 1;
+    } else {
+        return -1;
+    }
+
 }
 
-void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+int limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
     if(linRef + 2 <= TAMANHO && colRef + 8 <= TAMANHO){
         for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
@@ -35,8 +51,12 @@ void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colR
                 fonte[l][c] = 0;
             }
         }
+        }
+        return 1;
+    } else{
+        return -1;
     }
-    }
+    
 
 }
 
@@ -62,7 +82,7 @@ static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int 
 }
 
 
-void geraPecas(peca pecasGeradas[]){
+void geraPecas(peca pecasGeradas[8]){
 
     for(int idPeca = 0; idPeca <= 6; idPeca++){
         peca pecaGerada;

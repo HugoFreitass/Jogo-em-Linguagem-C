@@ -28,30 +28,10 @@ void mostraTabuleiro(char tabuleiro[TAMANHO][TAMANHO]){
 }
 
 
-// Precisa colocar restrição: só executar se não tiver bloco no caminho
-    // *Coluna sempre deve ser ímpar, para respeitar a config. do tabuleiro
-    // *É possível diminuir os argumentos dessa função declarando variáveis globais, verificar implicações
-void derrubaPeca(int fonte[TAMANHO][TAMANHO], char tabuleiro[TAMANHO][TAMANHO], peca pecas[7], int pecaAtual, int delay, int coluna){
-
-    for(int i = 1; i < 20; i++){
-        //delay = delay != 0? delay : 550;
-        delay_output(delay);
-        
-        limpaPeca(fonte, pecas[pecaAtual], i-1, coluna);
-
-        imprimePeca(fonte, pecas[pecaAtual], i, coluna);// Imprime na matriz de referência, mudar nome -> alocaPeca()
-
-        geraTabuleiro(fonte, tabuleiro);
-
-        mostraTabuleiro(tabuleiro);
-    }
-
-}
-
 int main() {
     int ch, matrizFonte[TAMANHO][TAMANHO] = {0};
     char tabuleiro[TAMANHO][TAMANHO] = {0};
-    peca pecas[7];
+    peca pecas[8];
 
 //----------------------------------------------------------------------
 //Inicialização
@@ -73,14 +53,15 @@ int main() {
 
     //derrubaPeca(matrizFonte, tabuleiro, pecas, 3, 550, 7);
     //pecaSorteada = rand() % 7;
-    int tempo = 550, pecaSorteada = 2;
+    int tempo = 550, pecaSorteada = 2, colidiu = 0;
     int linha = 0, coluna = 6;
 
     while (((ch = getch()) != 'q')) {
 
         delay_output(55);
-        if(tempo <= 0 && linha == 19){
-            pecaSorteada = 6;
+        if(tempo <= 0 && colidiu){
+            colidiu = 0;
+            pecaSorteada = rand() % 7;
             linha = 0;
             coluna = 6;
             tempo = 550;
@@ -94,21 +75,31 @@ int main() {
         tempo -= 55;
 
         switch (ch) {
-            case KEY_UP:
-                // Gira
-                printw("Tecla espaço pressionada\n");
+            // case KEY_UP:
+            //     // Gira
+            //     printw("Tecla espaço pressionada\n");
                 
-                break;
-            case KEY_DOWN:
-                // Acelera
-                printw("Seta para baixo pressionada\n");
-
-                break;
+            //     break;
+            // case KEY_DOWN:
+            //     // Acelera
+            //     linha ++;
+            //     limpaPeca(matrizFonte, pecas[pecaSorteada], linha-2, coluna);
+     
+            //     if(imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna) == -1){
+            //         imprimePeca(matrizFonte, pecas[pecaSorteada], linha-2, coluna);
+            //         linha--;
+            //         colidiu = 1;
+            //     }
+            //     break;
             case KEY_LEFT:
                 // Move a peça para a esquerda
                 limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
                 coluna -= 2;
-                imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
+                if(imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna) == -1){
+                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna-2);
+                    coluna += 2;
+                    colidiu = 1;
+                }
                 geraTabuleiro(matrizFonte, tabuleiro);
                 mostraTabuleiro(tabuleiro);
                 break;
@@ -116,33 +107,36 @@ int main() {
                 // Move peça para a direita
                 limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
                 coluna += 2;
-                imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
+                if(imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna) == -1){
+                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna+2);
+                    coluna -= 2;
+                    colidiu = 1;
+                }
                 geraTabuleiro(matrizFonte, tabuleiro);
                 mostraTabuleiro(tabuleiro);
                 break;
-            case ' ':
-                // Cai de uma vez
-                printw("Tecla espaço pressionada\n");
+            // case ' ':
+            //     // Cai de uma vez
+            //     printw("Tecla espaço pressionada\n"); //while imprime peca == 1 aumenta as linhas até colidir
                 
-                break;
+            //     break;
             default:
                 limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
-                imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);// Imprime na matriz de referência, mudar nome -> alocaPeca()
+                if(imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna) == -1){
+                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
+                    colidiu = 1;
+                }
                 geraTabuleiro(matrizFonte, tabuleiro);
                 mostraTabuleiro(tabuleiro);
                 break;
         }
-
-        limpaPeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
-
-        imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);// Imprime na matriz de referência, mudar nome -> alocaPeca()
-
-        geraTabuleiro(matrizFonte, tabuleiro);
-
-        mostraTabuleiro(tabuleiro);
+    
+        if(colidiu){
+            continue;
+        }
         //}
 
-        linha ++;
+        linha++;
 
     }
 
