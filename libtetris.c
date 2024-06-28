@@ -18,21 +18,26 @@ void geraTabuleiro(int fonte[TAMANHO][TAMANHO], char tabuleiro[TAMANHO][TAMANHO]
 }
 
 void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
-
-    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
-        for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            fonte[l][c] = pecaAtual.grid[j][k];
+    if(linRef + 2 <= TAMANHO && colRef + 8 <= TAMANHO){
+        for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+            for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
+                fonte[l][c] = pecaAtual.grid[j][k];
+            }
         }
     }
-
 }
 
 void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
-    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+    if(linRef + 2 <= TAMANHO && colRef + 8 <= TAMANHO){
+        for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            fonte[l][c] = 0;
+            if(pecaAtual.grid[j][k] != 0){
+                fonte[l][c] = 0;
+            }
         }
     }
+    }
+
 }
 
 // Gera a posicao inicial da peça

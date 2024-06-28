@@ -7,7 +7,7 @@
 
 
 void mostraTabuleiro(char tabuleiro[TAMANHO][TAMANHO]){
-    mvaddstr(0, 0,"╔");
+    
     for(int l = 0; l < TAMANHO; l++){
         mvaddstr(l+1, 0,"║");
         for(int c = 0; c < TAMANHO; c++){
@@ -18,9 +18,12 @@ void mostraTabuleiro(char tabuleiro[TAMANHO][TAMANHO]){
         printw("\n");
         mvaddstr(l+1, TAMANHO+1,"║");
     }
+
+    mvaddstr(0, 0,"╔");
     mvaddstr(0, TAMANHO+1,"╗");
     mvaddstr(TAMANHO+1, TAMANHO+1,"╝");
     mvaddstr(TAMANHO+1, 0,"╚");
+    mvaddstr(TAMANHO+2, 0,""); //Reposiciona o ponteiro
     refresh();
 }
 
@@ -53,8 +56,10 @@ int main() {
 //----------------------------------------------------------------------
 //Inicialização
     setlocale(LC_ALL, "");// Define o conjunto de caracteres para UTF-8
+    srand(time(NULL));    // Inicializa o gerador de números aleatórios com a semente baseada no tempo atual
     initscr();            // Inicia a janela ncurses
-    cbreak();             // Desabilita o buffer da linha
+    //cbreak();           // Desabilita o buffer da linha
+    halfdelay(1);       // Décimos de segundo entre uma entrada e outra      
     noecho();             // Não exibe a tecla pressionada
     keypad(stdscr, TRUE); // Habilita a captura de teclas especiais
 
@@ -66,12 +71,27 @@ int main() {
 //----------------------------------------------------------------------
 // Processos
 
-    derrubaPeca(matrizFonte, tabuleiro, pecas, 3, 550, 7);
+    //derrubaPeca(matrizFonte, tabuleiro, pecas, 3, 550, 7);
+    //pecaSorteada = rand() % 7;
+    int tempo = 550, pecaSorteada = 2;
+    int linha = 0, coluna = 6;
 
-//- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-// Transformar em uma função -> movimento(tecla)
+    while (((ch = getch()) != 'q')) {
 
-    while ((ch = getch()) != 'q') {
+        delay_output(55);
+        if(tempo <= 0 && linha == 19){
+            pecaSorteada = 6;
+            linha = 0;
+            coluna = 6;
+            tempo = 550;
+        }
+
+
+        //derrubaPeca(matrizFonte, tabuleiro, pecas, pecaSorteada, 550, 7);
+
+        //for(int i = 0; i <10 ; i++){
+        //delay_output(55);
+        tempo -= 55;
 
         switch (ch) {
             case KEY_UP:
@@ -86,21 +106,44 @@ int main() {
                 break;
             case KEY_LEFT:
                 // Move a peça para a esquerda
-                printw("Seta para a esquerda pressionada\n");
-
+                limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
+                coluna -= 2;
+                imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
+                geraTabuleiro(matrizFonte, tabuleiro);
+                mostraTabuleiro(tabuleiro);
                 break;
             case KEY_RIGHT:
                 // Move peça para a direita
-                printw("Seta para a direita pressionada\n");
-
+                limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
+                coluna += 2;
+                imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
+                geraTabuleiro(matrizFonte, tabuleiro);
+                mostraTabuleiro(tabuleiro);
                 break;
             case ' ':
                 // Cai de uma vez
                 printw("Tecla espaço pressionada\n");
                 
                 break;
+            default:
+                limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
+                imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);// Imprime na matriz de referência, mudar nome -> alocaPeca()
+                geraTabuleiro(matrizFonte, tabuleiro);
+                mostraTabuleiro(tabuleiro);
+                break;
         }
-        refresh();        
+
+        limpaPeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
+
+        imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);// Imprime na matriz de referência, mudar nome -> alocaPeca()
+
+        geraTabuleiro(matrizFonte, tabuleiro);
+
+        mostraTabuleiro(tabuleiro);
+        //}
+
+        linha ++;
+
     }
 
 //---------------------------------------------------------------------
