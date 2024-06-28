@@ -17,47 +17,37 @@ void geraTabuleiro(int fonte[TAMANHO][TAMANHO], char tabuleiro[TAMANHO][TAMANHO]
     }
 }
 
-int imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+int tentaMover(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
     int conta = 0;
     for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            if(fonte[l][c] == 0 && pecaAtual.grid[j][k] != 0){
+            if(l >= 0 && c >= 0 && l < TAMANHO && c < TAMANHO){
+                if(fonte[l][c] == 0 && pecaAtual.grid[j][k] != 0){
                 conta++;
+                } 
             }
         }
     }
-
-    if(conta == 8){
-        for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
-            for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-                if(fonte[l][c] == 0){
-                    fonte[l][c] = pecaAtual.grid[j][k];
-                }
-            }
-        }
-
-        return 1;
-    } else {
-        return -1;
-    }
-
+    return (conta == 8)? 1 : 0;
 }
 
-int limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
-    if(linRef + 2 <= TAMANHO && colRef + 8 <= TAMANHO){
-        for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+        for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
+            
+            fonte[l][c] = pecaAtual.grid[j][k];
+        }
+    }
+}
+
+void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
             if(pecaAtual.grid[j][k] != 0){
                 fonte[l][c] = 0;
             }
         }
-        }
-        return 1;
-    } else{
-        return -1;
     }
-    
-
 }
 
 // Gera a posicao inicial da peça

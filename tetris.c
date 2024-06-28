@@ -93,24 +93,20 @@ int main() {
             //     break;
             case KEY_LEFT:
                 // Move a peça para a esquerda
-                limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
-                coluna -= 2;
-                if(imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna) == -1){
-                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna-2);
-                    coluna += 2;
-                    colidiu = 1;
+                if(tentaMover(matrizFonte, pecas[pecaSorteada], linha, coluna) == 1){
+                    limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
+                    coluna -= 2;
+                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
                 }
                 geraTabuleiro(matrizFonte, tabuleiro);
                 mostraTabuleiro(tabuleiro);
                 break;
             case KEY_RIGHT:
                 // Move peça para a direita
-                limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
-                coluna += 2;
-                if(imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna) == -1){
-                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna+2);
-                    coluna -= 2;
-                    colidiu = 1;
+                if(tentaMover(matrizFonte, pecas[pecaSorteada], linha, coluna) == 1){
+                    limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
+                    coluna += 2;
+                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
                 }
                 geraTabuleiro(matrizFonte, tabuleiro);
                 mostraTabuleiro(tabuleiro);
@@ -121,13 +117,15 @@ int main() {
                 
             //     break;
             default:
-                limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
-                if(imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna) == -1){
-                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
+                if(tentaMover(matrizFonte, pecas[pecaSorteada], linha, coluna)){
+                    limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
+                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
+                    geraTabuleiro(matrizFonte, tabuleiro);
+                    mostraTabuleiro(tabuleiro);
+                } else {
                     colidiu = 1;
                 }
-                geraTabuleiro(matrizFonte, tabuleiro);
-                mostraTabuleiro(tabuleiro);
+ 
                 break;
         }
     
