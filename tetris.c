@@ -37,12 +37,12 @@ void mostraTabuleiro(int fonte[20][20]){
     refresh();
 }
 void teste(peca pecas[7], int pecaAtual){
-    for(int l = 0; l < 2; l++){
+    for(int l = 0; l < 4; l++){
         for(int c = 0; c < 8; c++){
             int fonteN=pecas[pecaAtual].grid1[l][c];
             switch(fonteN){
                 case 0:
-                printw(" ");
+                printw("▒");
                 break;
                 default:
                 printw("█");
@@ -53,11 +53,11 @@ void teste(peca pecas[7], int pecaAtual){
     }
     printw("\n\n");
     for(int l = 0; l < 4; l++){
-        for(int c = 0; c < 4; c++){
+        for(int c = 0; c < 8; c++){
             int fonteN=pecas[pecaAtual].grid2[l][c];
             switch(fonteN){
                 case 0:
-                printw(" ");
+                printw("▒");
                 break;
                 default:
                 printw("█");
@@ -67,12 +67,12 @@ void teste(peca pecas[7], int pecaAtual){
         printw("\n");
     }
     printw("\n\n");
-    for(int l = 0; l < 2; l++){
+    for(int l = 0; l < 4; l++){
         for(int c = 0; c < 8; c++){
             int fonteN=pecas[pecaAtual].grid3[l][c];
             switch(fonteN){
                 case 0:
-                printw(" ");
+                printw("▒");
                 break;
                 default:
                 printw("█");
@@ -83,11 +83,11 @@ void teste(peca pecas[7], int pecaAtual){
     }
     printw("\n\n");
     for(int l = 0; l < 4; l++){
-        for(int c = 0; c < 4; c++){
+        for(int c = 0; c < 8; c++){
             int fonteN=pecas[pecaAtual].grid4[l][c];
             switch(fonteN){
                 case 0:
-                printw(" ");
+                printw("▒");
                 break;
                 default:
                 printw("█");

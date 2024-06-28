@@ -44,53 +44,69 @@ void limpaPeca(int fonte[20][20], peca pecaAtual, int linRef, int colRef){
 // Gera a posicao inicial da peça
 static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int fimLinDois, int idPeca){
     peca pecaGerada;
-
+    
     //1
-    for(int l = 0; l < 2; l++){
+    for(int l = 0; l < 4; l++){
         for(int c = 0; c < 8; c++){
             pecaGerada.grid1[l][c] = 0;
         }
     }
     for(int i = inicioLinUm ; i <= fimLinUm; i++){
-        pecaGerada.grid1[0][i] = idPeca+1;
+        pecaGerada.grid1[1][i] = idPeca+1;
     }
 
     for(int i = inicioLinDois ; i <= fimLinDois; i++){
-        pecaGerada.grid1[1][i] = idPeca+1;
+        pecaGerada.grid1[2][i] = idPeca+1;
+    }
+    for(int c = 0; c < 8; c++){      //corrigindo bug da peça 2
+        pecaGerada.grid1[0][c] = 0;
     }
     
     //2
     for(int l = 0; l < 4; l++){
-        for(int c = 0; c < 4; c++){
+        for(int c = 0; c < 8; c++){
             pecaGerada.grid2[l][c] = 0;
         }
     }
     if(inicioLinUm>=0){
         for(int i = inicioLinUm/2 ; i <= fimLinUm/2; i++){
             for(int j=2;j<=3;j++){
-                pecaGerada.grid2[i][j] = idPeca+1;
+                pecaGerada.grid2[i][j+2] = idPeca+1;
             }
         }
     }
     if(inicioLinDois>=0){
         for(int i = inicioLinDois/2 ; i <= fimLinDois/2; i++){
             for(int j=0;j<=1;j++){
-                pecaGerada.grid2[i][j] = idPeca+1;
+                pecaGerada.grid2[i][j+2] = idPeca+1;
             }
         }
     }
     
 
     //3
+    for(int l = 0; l < 4; l++){
+        for(int c = 0; c < 8; c++){
+            pecaGerada.grid3[l][c] = 0;
+        }
+    }
+    int _num=0;
+    if((pecaGerada.grid1[1][7]==0 && pecaGerada.grid1[2][7]==0) && !(pecaGerada.grid1[1][1]==0 && pecaGerada.grid1[2][1]==0)) _num=2; // se primeira coluna preenchida e últiima não, puxa para a esquerda
     for(int i = 7, j=0; i >= 0; i--, j++){
-        pecaGerada.grid3[0][i] = pecaGerada.grid1[1][j];
-        pecaGerada.grid3[1][i] = pecaGerada.grid1[0][j];
+        pecaGerada.grid3[1][i-_num] = pecaGerada.grid1[2][j];
+        pecaGerada.grid3[2][i-_num] = pecaGerada.grid1[1][j];
     }
 
     //4
+    _num=0;
+    if((pecaGerada.grid1[1][7]==0 && pecaGerada.grid1[2][7]==0) && !(pecaGerada.grid1[1][1]==0 && pecaGerada.grid1[2][1]==0)) _num=1; // se primeira coluna preenchida e últiima não, puxa para cima
     for(int k=0, l=3;k<4;k++,l--){
-        for(int i = 3, j=0; i >= 0; i--, j++){
-            pecaGerada.grid4[k][i] = pecaGerada.grid2[l][j];
+        for(int i = 7, j=0; i >= 0; i--, j++){
+            pecaGerada.grid4[k-_num][i-(_num*2)] = pecaGerada.grid2[l][j];
+            if(_num==1){
+                if(k==3) pecaGerada.grid4[k][i] = 0;
+                if(i==6||i==7) pecaGerada.grid4[k][i] = 0;
+            }
         }
     }
     return pecaGerada;

@@ -5,10 +5,10 @@
 
 typedef struct peca{ // Guarda o grid de cada peça
     int orientacao;
-    int grid1[2][8];
-    int grid2[4][4];
-    int grid3[2][8];
-    int grid4[4][4];
+    int grid1[4][8];
+    int grid2[4][8];
+    int grid3[4][8];
+    int grid4[4][8];
 }peca;
 
 void imprimePeca(int fonte[20][20], peca pecaAtual, int linRef, int colRef);
