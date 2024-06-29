@@ -3,6 +3,7 @@
 #include <time.h>
 #include <locale.h>
 #include <stdlib.h>
+#include<unistd.h>
 #include "libtetris.h"
 int ch=0;
 void mostraTabuleiro(int fonteMatriz[TAMANHO][TAMANHO]){
@@ -17,6 +18,9 @@ void mostraTabuleiro(int fonteMatriz[TAMANHO][TAMANHO]){
                 break;
                 default:
                 mvaddstr(l+1, c+1, "█");
+                if(fonteMatriz[l][c]<0){
+                    mvaddstr(l+1, c+1, "▒");
+                }
                 break;
             }
             mvaddstr(TAMANHO+1, c+1,"═");
@@ -105,8 +109,6 @@ int main() {
     noecho();             // Não exibe a tecla pressionada
     keypad(stdscr, TRUE); // Habilita a captura de teclas especiais
     geraPecas(pecas);    // Gera e salva as peças no vetor
-    time_t t1;
-    time_t t2;
     /*
     int num=0
     while (true) {
@@ -118,18 +120,15 @@ int main() {
         refresh();        
     }
     */
-    int pecaSorteada = 2, colh = 0, colv =0, colg=0, nextOr=2, game=1, counter=0;
+    int pecaSorteada = 2, colh = 0, colv =0, colg=0, nextOr=2, game=1, counter=0, delay=500;
     int x = 4, y = 0;
     float tempo=1, padraot=tempo;
-    pecaSorteada = rand() % 7;
     while(game==1) {
-        colh=0;
-        colv=0;
-        colg=0;
-        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x);
+        counter=0;
+        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
         mostraTabuleiro(matrizFonte);
-        t1 = time(NULL);
         while(1){
+            delay=500;
             timeout(1);
             ch = getch();
             switch(ch){
@@ -139,7 +138,7 @@ int main() {
                     if(colh==0){
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         x-=2;
-                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x);
+                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
                     }
                     mostraTabuleiro(matrizFonte);
                 break;
@@ -149,7 +148,7 @@ int main() {
                     if(colh==0){
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         x+=2;
-                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x);
+                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
                     }
                     mostraTabuleiro(matrizFonte);
                 break;
@@ -161,21 +160,36 @@ int main() {
                     if(colg==0 && y>=0){
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         pecas[pecaSorteada].orientacao=nextOr;
-                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x);
+                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
                     }
                     mostraTabuleiro(matrizFonte);
                 break;
-            }
-            t2 = time(NULL);
-            if((t2-t1)>1){
+                case KEY_DOWN:
+                    delay=100;
                 break;
             }
+            sleep(0.001);
+            counter+=1;
+            if(counter>=delay){
+                break;
+            }
+        }
+        if(colv==1){
+            imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, -1);
+            pecaSorteada = rand() % 7;
+            pecas[pecaSorteada].orientacao=1;
+            x = 4;
+            y = 0;
+            colh = 0;
+            colv = 0;
+            colg = 0;
+            continue;
         }
         colv=colisao(pecas[pecaSorteada], 1, 1, matrizFonte, y, x);
         if(colv==0){
             limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
             y++;
-            imprimePeca(matrizFonte, pecas[pecaSorteada], y, x);
+            imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
         }
         mostraTabuleiro(matrizFonte);
     }

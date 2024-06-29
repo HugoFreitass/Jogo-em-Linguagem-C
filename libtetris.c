@@ -2,22 +2,30 @@
 #include <stdlib.h>
 #include "libtetris.h"
 
-void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef, int mod){
     for(int l = linRef, j = 0; l < linRef + 4; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
             int ord=pecaAtual.orientacao;
             switch(ord){
                 case 1:
-                    fonte[l][c] = pecaAtual.grid1[j][k];
+                    if(pecaAtual.grid1[j][k]!=0){
+                        fonte[l][c] = pecaAtual.grid1[j][k]*mod;
+                    }
                 break;
                 case 2:
-                    fonte[l][c] = pecaAtual.grid2[j][k];
+                    if(pecaAtual.grid2[j][k]!=0){
+                        fonte[l][c] = pecaAtual.grid2[j][k]*mod;
+                    }
                 break;
                 case 3:
-                    fonte[l][c] = pecaAtual.grid3[j][k];
+                    if(pecaAtual.grid3[j][k]!=0){
+                        fonte[l][c] = pecaAtual.grid3[j][k]*mod;
+                    }
                 break;
                 case 4:
-                    fonte[l][c] = pecaAtual.grid4[j][k];
+                    if(pecaAtual.grid4[j][k]!=0){
+                        fonte[l][c] = pecaAtual.grid4[j][k]*mod;
+                    }
                 break;
             }
         }

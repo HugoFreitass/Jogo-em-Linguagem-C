@@ -12,7 +12,7 @@ typedef struct peca{ // Guarda o grid de cada peça
     int grid4[4][8];
 }peca;
 
-void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef);
+void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef, int mod);
 void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef);
 static struct peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int fimLinDois, int idPeca);
 void geraPecas(peca pecasGeradas[]);
