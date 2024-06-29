@@ -138,9 +138,7 @@ int main() {
                     if(colh==0){
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         x-=2;
-                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
                     }
-                    mostraTabuleiro(matrizFonte);
                 break;
                 case KEY_RIGHT:
                     // Move peça para a direita
@@ -148,9 +146,7 @@ int main() {
                     if(colh==0){
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         x+=2;
-                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
                     }
-                    mostraTabuleiro(matrizFonte);
                 break;
                 case KEY_UP:
                     //gira a peça
@@ -160,14 +156,14 @@ int main() {
                     if(colg==0 && y>=0){
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         pecas[pecaSorteada].orientacao=nextOr;
-                        imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
                     }
-                    mostraTabuleiro(matrizFonte);
                 break;
                 case KEY_DOWN:
-                    delay=100;
+                    delay=30;
                 break;
             }
+            imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
+            mostraTabuleiro(matrizFonte);
             sleep(0.001);
             counter+=1;
             if(counter>=delay){

@@ -3,40 +3,53 @@
 #include "libtetris.h"
 
 void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef, int mod){
+    int ord=pecaAtual.orientacao;
+    int pecaMatriz[4][8];
+    switch(ord){
+        case 1:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
+        break;
+        case 2:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
+        break;
+        case 3:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
+        break;
+        case 4:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
+        break;
+    }
     for(int l = linRef, j = 0; l < linRef + 4; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            int ord=pecaAtual.orientacao;
-            switch(ord){
-                case 1:
-                    if(pecaAtual.grid1[j][k]!=0){
-                        fonte[l][c] = pecaAtual.grid1[j][k]*mod;
-                    }
-                break;
-                case 2:
-                    if(pecaAtual.grid2[j][k]!=0){
-                        fonte[l][c] = pecaAtual.grid2[j][k]*mod;
-                    }
-                break;
-                case 3:
-                    if(pecaAtual.grid3[j][k]!=0){
-                        fonte[l][c] = pecaAtual.grid3[j][k]*mod;
-                    }
-                break;
-                case 4:
-                    if(pecaAtual.grid4[j][k]!=0){
-                        fonte[l][c] = pecaAtual.grid4[j][k]*mod;
-                    }
-                break;
+            if(pecaMatriz[j][k]>0 && fonte[l][c]>=0){
+                fonte[l][c] = pecaMatriz[j][k]*mod;
             }
         }
     }
-
 }
 
 void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+    int ord=pecaAtual.orientacao;
+    int pecaMatriz[4][8];
+    switch(ord){
+        case 1:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
+        break;
+        case 2:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
+        break;
+        case 3:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
+        break;
+        case 4:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
+        break;
+    }
     for(int l = linRef, j = 0; l < linRef + 4; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            fonte[l][c] = 0;
+            if(pecaMatriz[j][k]>0 && fonte[l][c]>=0){
+                fonte[l][c] = 0;
+            }
         }
     }
 }
@@ -52,11 +65,11 @@ static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int 
         }
     }
     for(int i = inicioLinUm ; i <= fimLinUm; i++){
-        pecaGerada.grid1[1][i] = idPeca+1;
+        pecaGerada.grid1[1][i] = idPeca+2;
     }
 
     for(int i = inicioLinDois ; i <= fimLinDois; i++){
-        pecaGerada.grid1[2][i] = idPeca+1;
+        pecaGerada.grid1[2][i] = idPeca+2;
     }
     for(int c = 0; c < 8; c++){      //corrigindo bug da peça 2
         pecaGerada.grid1[0][c] = 0;
@@ -71,14 +84,14 @@ static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int 
     if(inicioLinUm>=0){
         for(int i = inicioLinUm/2 ; i <= fimLinUm/2; i++){
             for(int j=2;j<=3;j++){
-                pecaGerada.grid2[i][j+2] = idPeca+1;
+                pecaGerada.grid2[i][j+2] = idPeca+2;
             }
         }
     }
     if(inicioLinDois>=0){
         for(int i = inicioLinDois/2 ; i <= fimLinDois/2; i++){
             for(int j=0;j<=1;j++){
-                pecaGerada.grid2[i][j+2] = idPeca+1;
+                pecaGerada.grid2[i][j+2] = idPeca+2;
             }
         }
     }
