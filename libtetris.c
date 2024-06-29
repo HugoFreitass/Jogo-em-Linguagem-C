@@ -2,39 +2,31 @@
 #include <stdlib.h>
 #include "libtetris.h"
 
-/*
-//#define bloco1 '\xe2\x96\x88'
-#define bloco1 '\xFE' //'\xdb'; //09608; //\u2588'
-#define bloco2 ' ' 
-
-
-void geraTabuleiro(int fonte[22][22], char tabuleiro[22][22]){
-    // Tabuleiro 20 x 10
-    // Definir macros para facilitar mudanças de tamanho
-    
-    for(int l = 0; l < 22; l++){
-        for(int c = 0; c < 22; c++){
-            if(l != 0 && l != 21 &&  c != 0 && c!= 21 && fonte[l][c] == 0) tabuleiro[l][c] = ' ';
-            if(l != 0 && l != 21 &&  c != 0 && c!= 21 && fonte[l][c] != 0) tabuleiro[l][c] = '*';
-            if((l == 0 || l == 21) && c != 0 && c!= 21) tabuleiro[l][c] = '-';
-            if(c == 0 || c == 21) tabuleiro[l][c] = '|';
-        }
-    }
-}
-*/
-
-void imprimePeca(int fonte[20][20], peca pecaAtual, int linRef, int colRef){
-
-    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+    for(int l = linRef, j = 0; l < linRef + 4; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            fonte[l][c] = pecaAtual.grid1[j][k];
+            int ord=pecaAtual.orientacao;
+            switch(ord){
+                case 1:
+                    fonte[l][c] = pecaAtual.grid1[j][k];
+                break;
+                case 2:
+                    fonte[l][c] = pecaAtual.grid2[j][k];
+                break;
+                case 3:
+                    fonte[l][c] = pecaAtual.grid3[j][k];
+                break;
+                case 4:
+                    fonte[l][c] = pecaAtual.grid4[j][k];
+                break;
+            }
         }
     }
 
 }
 
-void limpaPeca(int fonte[20][20], peca pecaAtual, int linRef, int colRef){
-    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+    for(int l = linRef, j = 0; l < linRef + 4; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
             fonte[l][c] = 0;
         }
@@ -162,4 +154,79 @@ void geraPecas(peca pecasGeradas[]){
 
         pecasGeradas[idPeca] = pecaGerada;
     }
+}
+void copiaMatriz(int l, int c, int matrizCopia[l][c], int matrizEnt[l][c]){
+    for(int i = 0; i < l; i++){
+        for(int j = 0; j < c; j++){
+            matrizCopia[i][j] = matrizEnt[i][j];
+        }
+    }
+}
+int colisao(peca pecaAtual, int mov, int hor_ver, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx){
+    int ord=pecaAtual.orientacao;
+    int colide=0;
+    int pecaMatriz[4][8];
+    switch(ord){
+        case 1:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
+        break;
+        case 2:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
+        break;
+        case 3:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
+        break;
+        case 4:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
+        break;
+    }
+    if(hor_ver==0){
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 8; j++){
+                if(pecaMatriz[i][j]!=0 && (matrizFonte[yy+i][xx+j+mov]<0 || xx+j+mov>=TAMANHO || xx+j+mov<0)){
+                    colide = 1;
+                }
+            }
+        }
+    }
+    else{
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 8; j++){
+                if(pecaMatriz[i][j]!=0 && (matrizFonte[yy+i+mov][xx+j]<0 || yy+i+mov>=TAMANHO ||  yy+i+mov<0)){
+                    colide = 1;
+                }
+            }
+        }
+    }
+    return colide;
+}
+int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx){
+    int ord=orientacao;
+    int colide=0;
+    int pecaMatriz[4][8];
+    switch(ord){
+        case 1:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
+        break;
+        case 2:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
+        break;
+        case 3:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
+        break;
+        case 4:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
+        break;
+    }
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 8; j++){
+            if(pecaMatriz[i][j]!=0 && yy+i<0 || (yy+i>=TAMANHO || xx+j<0 || xx+j>=TAMANHO)){
+                colide=1;
+            }
+            if(pecaMatriz[i][j]!=0 && matrizFonte[yy+i][xx+j]<0){
+                colide = 1;
+            }
+        }
+    }
+    return colide;
 }
