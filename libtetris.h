@@ -11,8 +11,8 @@ typedef struct peca{ // Guarda o grid de cada peça
 }peca;
 
 void geraTabuleiro(int v[TAMANHO][TAMANHO], char tabuleiro[TAMANHO][TAMANHO]);
-int tentaMover(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef);
 void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef);
+int movePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef, int compensa);
 void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef);
 static struct peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int fimLinDois);
 void geraPecas(peca pecasGeradas[8]);

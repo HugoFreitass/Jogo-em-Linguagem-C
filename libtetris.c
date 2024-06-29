@@ -17,10 +17,34 @@ void geraTabuleiro(int fonte[TAMANHO][TAMANHO], char tabuleiro[TAMANHO][TAMANHO]
     }
 }
 
-int tentaMover(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
-    int conta = 0;
+void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
     for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
+            if(l >= 0 && c >= 0 && l < TAMANHO && c < TAMANHO){
+            fonte[l][c] = pecaAtual.grid[j][k]; 
+            }
+        }       
+    }
+}
+
+void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
+    for(int l = linRef, j = 0; l < (linRef + 2); l++, j++){
+        for(int c = colRef, k = 0; c < (colRef + 8); c++, k++){
+            if(l >= 0 && c >= 0 && l < TAMANHO && c < TAMANHO){// Garante que está dentro do tabuleiro antes de tentar acessar
+                if(pecaAtual.grid[j][k] != 0){
+                    fonte[l][c] = 0;
+                }
+            }    
+        }
+    }
+}
+
+int movePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef, int compensa){
+    limpaPeca(fonte, pecaAtual, linRef-1, colRef);//
+
+    int conta = 0;
+    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
+        for(int c = colRef+compensa, k = 0; c < colRef + 8; c++, k++){
             if(l >= 0 && c >= 0 && l < TAMANHO && c < TAMANHO){
                 if(fonte[l][c] == 0 && pecaAtual.grid[j][k] != 0){
                 conta++;
@@ -28,27 +52,17 @@ int tentaMover(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colR
             }
         }
     }
-    return (conta == 8)? 1 : 0;
-}
 
-void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
-    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
-        for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            
-            fonte[l][c] = pecaAtual.grid[j][k];
-        }
+    // Verificação para saber se a peça pode ser movida
+    if(conta == 8){
+        imprimePeca(fonte, pecaAtual, linRef, colRef+compensa);//erro
+        return 1;
+    } else {
+        imprimePeca(fonte, pecaAtual, linRef-1, colRef);
+        return -1;
     }
 }
 
-void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
-    for(int l = linRef, j = 0; l < linRef + 2; l++, j++){
-        for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
-            if(pecaAtual.grid[j][k] != 0){
-                fonte[l][c] = 0;
-            }
-        }
-    }
-}
 
 // Gera a posicao inicial da peça
 static peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int fimLinDois){

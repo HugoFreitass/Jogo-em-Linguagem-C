@@ -53,13 +53,20 @@ int main() {
 
     //derrubaPeca(matrizFonte, tabuleiro, pecas, 3, 550, 7);
     //pecaSorteada = rand() % 7;
-    int tempo = 550, pecaSorteada = 2, colidiu = 0;
+    int tempo = 550, pecaSorteada = rand() % 7, colidiu = 0;
     int linha = 0, coluna = 6;
 
     while (((ch = getch()) != 'q')) {
 
         delay_output(55);
-        if(tempo <= 0 && colidiu){
+        tempo -= 55;
+
+        // if(tempo <= 0){//
+        //     linha++;
+        //     tempo = 550;
+        // } 
+
+        if(colidiu){
             colidiu = 0;
             pecaSorteada = rand() % 7;
             linha = 0;
@@ -68,11 +75,12 @@ int main() {
         }
 
 
+
         //derrubaPeca(matrizFonte, tabuleiro, pecas, pecaSorteada, 550, 7);
 
         //for(int i = 0; i <10 ; i++){
         //delay_output(55);
-        tempo -= 55;
+       
 
         switch (ch) {
             // case KEY_UP:
@@ -93,23 +101,18 @@ int main() {
             //     break;
             case KEY_LEFT:
                 // Move a peça para a esquerda
-                if(tentaMover(matrizFonte, pecas[pecaSorteada], linha, coluna) == 1){
-                    limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
-                    coluna -= 2;
-                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
-                }
-                geraTabuleiro(matrizFonte, tabuleiro);
-                mostraTabuleiro(tabuleiro);
+
                 break;
             case KEY_RIGHT:
                 // Move peça para a direita
-                if(tentaMover(matrizFonte, pecas[pecaSorteada], linha, coluna) == 1){
-                    limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
-                    coluna += 2;
-                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
+                coluna += 2;
+                if(movePeca(matrizFonte, pecas[pecaSorteada], linha, coluna, 2) == -1){
+                    coluna -= 2;
+                    colidiu = 1;
                 }
                 geraTabuleiro(matrizFonte, tabuleiro);
                 mostraTabuleiro(tabuleiro);
+
                 break;
             // case ' ':
             //     // Cai de uma vez
@@ -117,22 +120,17 @@ int main() {
                 
             //     break;
             default:
-                if(tentaMover(matrizFonte, pecas[pecaSorteada], linha, coluna)){
-                    limpaPeca(matrizFonte, pecas[pecaSorteada], linha-1, coluna);
-                    imprimePeca(matrizFonte, pecas[pecaSorteada], linha, coluna);
-                    geraTabuleiro(matrizFonte, tabuleiro);
-                    mostraTabuleiro(tabuleiro);
-                } else {
+                if(movePeca(matrizFonte, pecas[pecaSorteada], linha, coluna, 0) == -1){
                     colidiu = 1;
                 }
- 
+                geraTabuleiro(matrizFonte, tabuleiro);
+                mostraTabuleiro(tabuleiro);
                 break;
         }
     
-        if(colidiu){
-            continue;
-        }
-        //}
+        // if(colidiu){
+        //     continue;
+        // }
 
         linha++;
 
