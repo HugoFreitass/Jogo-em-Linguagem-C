@@ -171,15 +171,19 @@ int main() {
             }
         }
         if(colv==1){
-            imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, -1);
-            pecaSorteada = rand() % 7;
-            pecas[pecaSorteada].orientacao=1;
-            x = 4;
-            y = 0;
-            colh = 0;
-            colv = 0;
-            colg = 0;
-            continue;
+            colv=colisao(pecas[pecaSorteada], 1, 1, matrizFonte, y, x);
+            if(colv==1){
+                //limpar(matrizFonte);
+                imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, -1);
+                pecaSorteada = rand() % 7;
+                pecas[pecaSorteada].orientacao=1;
+                x = 4;
+                y = 0;
+                colh = 0;
+                colv = 0;
+                colg = 0;
+                continue;
+            }
         }
         colv=colisao(pecas[pecaSorteada], 1, 1, matrizFonte, y, x);
         if(colv==0){

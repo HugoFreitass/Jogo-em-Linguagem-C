@@ -20,5 +20,6 @@ void copiaMatriz(int l, int c, int matrizCopia[l][c], int matrizEnt[l][c]);
 int colisao(peca pecaAtual, int mov, int hor_ver, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx);
 int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx);
 void limpar(int matrizFonte[TAMANHO][TAMANHO]);
+void matrizProvisoria(peca pecaAtual, int pecaMatriz[4][8], int ord);
 
 #endif

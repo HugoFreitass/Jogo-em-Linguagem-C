@@ -3,22 +3,8 @@
 #include "libtetris.h"
 
 void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef, int mod){
-    int ord=pecaAtual.orientacao;
     int pecaMatriz[4][8];
-    switch(ord){
-        case 1:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
-        break;
-        case 2:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
-        break;
-        case 3:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
-        break;
-        case 4:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
-        break;
-    }
+    matrizProvisoria(pecaAtual, pecaMatriz, pecaAtual.orientacao);
     for(int l = linRef, j = 0; l < linRef + 4; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
             if(pecaMatriz[j][k]>0 && fonte[l][c]>=0){
@@ -29,22 +15,8 @@ void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int co
 }
 
 void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef){
-    int ord=pecaAtual.orientacao;
     int pecaMatriz[4][8];
-    switch(ord){
-        case 1:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
-        break;
-        case 2:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
-        break;
-        case 3:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
-        break;
-        case 4:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
-        break;
-    }
+    matrizProvisoria(pecaAtual, pecaMatriz, pecaAtual.orientacao);
     for(int l = linRef, j = 0; l < linRef + 4; l++, j++){
         for(int c = colRef, k = 0; c < colRef + 8; c++, k++){
             if(pecaMatriz[j][k]>0 && fonte[l][c]>=0){
@@ -184,23 +156,9 @@ void copiaMatriz(int l, int c, int matrizCopia[l][c], int matrizEnt[l][c]){
     }
 }
 int colisao(peca pecaAtual, int mov, int hor_ver, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx){
-    int ord=pecaAtual.orientacao;
     int colide=0;
     int pecaMatriz[4][8];
-    switch(ord){
-        case 1:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
-        break;
-        case 2:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
-        break;
-        case 3:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
-        break;
-        case 4:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
-        break;
-    }
+    matrizProvisoria(pecaAtual, pecaMatriz, pecaAtual.orientacao);
     if(hor_ver==0){
         for(int i = 0; i < 4; i++){
             for(int j = 0; j < 8; j++){
@@ -222,23 +180,9 @@ int colisao(peca pecaAtual, int mov, int hor_ver, int matrizFonte[TAMANHO][TAMAN
     return colide;
 }
 int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx){
-    int ord=orientacao;
     int colide=0;
     int pecaMatriz[4][8];
-    switch(ord){
-        case 1:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
-        break;
-        case 2:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
-        break;
-        case 3:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
-        break;
-        case 4:
-            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
-        break;
-    }
+    matrizProvisoria(pecaAtual, pecaMatriz, orientacao);
     for(int i = 0; i < 4; i++){
         for(int j = 0; j < 8; j++){
             if(pecaMatriz[i][j]!=0 && yy+i<0 || (yy+i>=TAMANHO || xx+j<0 || xx+j>=TAMANHO)){
@@ -272,5 +216,21 @@ void limpar(int matrizFonte[TAMANHO][TAMANHO]){
                 }
             }
         }
+    }
+}
+void matrizProvisoria(peca pecaAtual, int pecaMatriz[4][8], int ord){
+    switch(ord){
+        case 1:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid1);
+        break;
+        case 2:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid2);
+        break;
+        case 3:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid3);
+        break;
+        case 4:
+            copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
+        break;
     }
 }
