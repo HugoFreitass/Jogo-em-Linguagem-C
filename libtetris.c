@@ -230,3 +230,26 @@ int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], i
     }
     return colide;
 }
+void limpar(int matrizFonte[TAMANHO][TAMANHO]){
+    int cheia;
+    for(int l=TAMANHO-1;l>0;l--){
+        cheia=1;
+        for(int c=0;c<TAMANHO;c++){
+            if(matrizFonte[l][c]==0){
+                cheia=0;
+                break;
+            }
+        }
+        if(cheia==1){
+            for(int c=0;c<TAMANHO;c++){
+                matrizFonte[l][c]=0;
+            }
+            for(int i=l;i>0;i--){
+                for(int j=0;j<TAMANHO;j++){
+                    matrizFonte[l][j]=matrizFonte[l-1][j];
+                    matrizFonte[l-1][j]=0;
+                }
+            }
+        }
+    }
+}

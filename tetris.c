@@ -135,12 +135,10 @@ int main() {
             switch(ch){
                 case KEY_LEFT:
                     // Move a peça para a esquerda
-                    printw("left ");
                     colh=colisao(pecas[pecaSorteada], -2, 0, matrizFonte, y, x);
                     if(colh==0){
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         x-=2;
-                        printw("left!!!");
                         imprimePeca(matrizFonte, pecas[pecaSorteada], y, x);
                     }
                     mostraTabuleiro(matrizFonte);
@@ -169,7 +167,7 @@ int main() {
                 break;
             }
             t2 = time(NULL);
-            if((t2-t1)>15){
+            if((t2-t1)>1){
                 break;
             }
         }
