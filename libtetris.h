@@ -22,5 +22,7 @@ int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], i
 void limpar(int matrizFonte[TAMANHO][TAMANHO]);
 void matrizProvisoria(peca pecaAtual, int pecaMatriz[4][8], int ord);
 int gameover(int matrizFonte[TAMANHO][TAMANHO]);
+void imprimePreview(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int yy, int xx);
+void limpaPreview(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int yy, int xx);
 
 #endif

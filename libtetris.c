@@ -248,3 +248,42 @@ int gameover(int matrizFonte[TAMANHO][TAMANHO]){
     }
     return 0;
 }
+//testando
+void imprimePreview(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int yy, int xx){
+    int yPrev=yy;
+    int pecaMatriz[4][8];
+    matrizProvisoria(pecaAtual, pecaMatriz, pecaAtual.orientacao);
+    int colv=colisao(pecaAtual, 1, 1, fonte, yPrev, xx);
+    while(colv==0){
+        colv=colisao(pecaAtual, 1, 1, fonte, yPrev, xx);
+        if(colv==0){
+            yPrev++;
+        }
+    }
+    for(int l = yPrev, j = 0; l < yPrev + 4; l++, j++){
+        for(int c = xx, k = 0; c < xx + 8; c++, k++){
+            if(pecaMatriz[j][k]>0 && fonte[l][c]>=0){
+                fonte[l][c] = 9;
+            }
+        }
+    }
+}
+void limpaPreview(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int yy, int xx){
+    int yPrev=yy;
+    int pecaMatriz[4][8];
+    matrizProvisoria(pecaAtual, pecaMatriz, pecaAtual.orientacao);
+    int colv=colisao(pecaAtual, 1, 1, fonte, yPrev, xx);
+    while(colv==0){
+        colv=colisao(pecaAtual, 1, 1, fonte, yPrev, xx);
+        if(colv==0){
+            yPrev++;
+        }
+    }
+    for(int l = yPrev, j = 0; l < yPrev + 4; l++, j++){
+        for(int c = xx, k = 0; c < xx + 8; c++, k++){
+            if(pecaMatriz[j][k]>0 && fonte[l][c]>=0){
+                fonte[l][c] = 0;
+            }
+        }
+    }
+}

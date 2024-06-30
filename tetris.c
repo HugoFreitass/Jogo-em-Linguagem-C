@@ -6,11 +6,13 @@
 #include <stdlib.h>
 #include "libtetris.h"
 #define COLOR_ORANGE 8
+#define COLOR_GRAY 9
 int ch=0;
 int game=1;
 void mostraTabuleiro(int fonteMatriz[TAMANHO][TAMANHO]){
     int cor;
     init_color(COLOR_ORANGE, 1000, 350, 0);
+    init_color(COLOR_GRAY, 400, 400, 400);
     init_pair(1, COLOR_MAGENTA, COLOR_BLACK);
     init_pair(2, COLOR_YELLOW, COLOR_BLACK);
     init_pair(3, COLOR_CYAN, COLOR_BLACK);
@@ -18,6 +20,7 @@ void mostraTabuleiro(int fonteMatriz[TAMANHO][TAMANHO]){
     init_pair(5, COLOR_BLUE, COLOR_BLACK);
     init_pair(6, COLOR_RED, COLOR_BLACK);
     init_pair(7, COLOR_GREEN, COLOR_BLACK);
+    init_pair(8, COLOR_GRAY, COLOR_BLACK);
 
     for(int l = 0; l < TAMANHO; l++){
         mvaddstr(l+1, 0,"║");
@@ -28,7 +31,7 @@ void mostraTabuleiro(int fonteMatriz[TAMANHO][TAMANHO]){
                 cor=(fonteN*-1)-1;
             }
             else{
-                cor=fonteN -1;
+                cor=fonteN-1;
             }
             attron(COLOR_PAIR(cor));
             switch(fonteN){
@@ -44,6 +47,9 @@ void mostraTabuleiro(int fonteMatriz[TAMANHO][TAMANHO]){
                     else{
                         mvaddstr(l+1, c+1, "♯");
                     }
+                }
+                if(fonteMatriz[l][c]==9){
+                    mvaddstr(l+1, c+1, "░");
                 }
                 break;
             }
@@ -88,6 +94,7 @@ int main() {
                     // Move a peça para a esquerda
                     colh=colisao(pecas[pecaSorteada], -2, 0, matrizFonte, y, x);
                     if(colh==0){
+                        limpaPreview(matrizFonte, pecas[pecaSorteada], y, x);
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         x-=2;
                     }
@@ -96,6 +103,7 @@ int main() {
                     // Move peça para a direita
                     colh=colisao(pecas[pecaSorteada], 2, 0, matrizFonte, y, x);
                     if(colh==0){
+                        limpaPreview(matrizFonte, pecas[pecaSorteada], y, x);
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         x+=2;
                     }
@@ -106,6 +114,7 @@ int main() {
                     if(nextOr==0) nextOr=1;
                     colg=colGiro(pecas[pecaSorteada], nextOr, matrizFonte, y, x);
                     if(colg==0 && y>=0){
+                        limpaPreview(matrizFonte, pecas[pecaSorteada], y, x);
                         limpaPeca(matrizFonte, pecas[pecaSorteada], y, x);
                         pecas[pecaSorteada].orientacao=nextOr;
                     }
@@ -123,10 +132,12 @@ int main() {
                             y++;
                         }
                     }
+                    limpaPreview(matrizFonte, pecas[pecaSorteada], y, x);
                     limpaPeca(matrizFonte, pecas[pecaSorteada], yinicial, xinicial);
                     delay=0;
                 break;
             }
+            imprimePreview(matrizFonte, pecas[pecaSorteada], y, x);
             imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
             mostraTabuleiro(matrizFonte);
             sleep(0.001);
