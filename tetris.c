@@ -2,10 +2,11 @@
 #include <ncurses.h>
 #include <time.h>
 #include <locale.h>
+#include <unistd.h>
 #include <stdlib.h>
-#include<unistd.h>
 #include "libtetris.h"
 int ch=0;
+int game=1;
 void mostraTabuleiro(int fonteMatriz[TAMANHO][TAMANHO]){
     for(int l = 0; l < TAMANHO; l++){
         mvaddstr(l+1, 0,"║");
@@ -19,7 +20,12 @@ void mostraTabuleiro(int fonteMatriz[TAMANHO][TAMANHO]){
                 default:
                 mvaddstr(l+1, c+1, "█");
                 if(fonteMatriz[l][c]<0){
-                    mvaddstr(l+1, c+1, "▒");
+                    if(game==1){
+                        mvaddstr(l+1, c+1, "▒");
+                    }
+                    else{
+                        mvaddstr(l+1, c+1, "♯");
+                    }
                 }
                 break;
             }
@@ -120,9 +126,9 @@ int main() {
         refresh();        
     }
     */
-    int pecaSorteada = 2, colh = 0, colv =0, colg=0, nextOr=2, game=1, counter=0, delay=500;
-    int x = 4, y = 0;
-    float tempo=1, padraot=tempo;
+    int pecaSorteada = 2, colh = 0, colv =0, colg=0, nextOr=2, counter=0, delay=500;
+    int xpad = 6, ypad = -1;
+    int x = xpad, y = ypad;
     while(game==1) {
         counter=0;
         imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
@@ -173,12 +179,14 @@ int main() {
         if(colv==1){
             colv=colisao(pecas[pecaSorteada], 1, 1, matrizFonte, y, x);
             if(colv==1){
-                //limpar(matrizFonte);
                 imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, -1);
+                limpar(matrizFonte);
+                game=!gameover(matrizFonte);
+                if(game==0) break;
                 pecaSorteada = rand() % 7;
                 pecas[pecaSorteada].orientacao=1;
-                x = 4;
-                y = 0;
+                x = xpad;
+                y = ypad;
                 colh = 0;
                 colv = 0;
                 colg = 0;
@@ -193,7 +201,9 @@ int main() {
         }
         mostraTabuleiro(matrizFonte);
     }
-
+    while(game==0){
+        mostraTabuleiro(matrizFonte);
+    }
 //---------------------------------------------------------------------
 // Finalização
 

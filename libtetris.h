@@ -1,7 +1,7 @@
 #ifndef _LIBTETRIS_H
 #define _LIBTETRIS_H
 
-#include<stdio.h>
+#include <stdio.h>
 #define TAMANHO 20
 
 typedef struct peca{ // Guarda o grid de cada peça
@@ -21,5 +21,6 @@ int colisao(peca pecaAtual, int mov, int hor_ver, int matrizFonte[TAMANHO][TAMAN
 int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx);
 void limpar(int matrizFonte[TAMANHO][TAMANHO]);
 void matrizProvisoria(peca pecaAtual, int pecaMatriz[4][8], int ord);
+int gameover(int matrizFonte[TAMANHO][TAMANHO]);
 
 #endif

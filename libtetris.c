@@ -197,22 +197,28 @@ int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], i
 }
 void limpar(int matrizFonte[TAMANHO][TAMANHO]){
     int cheia;
-    for(int l=TAMANHO-1;l>0;l--){
-        cheia=1;
-        for(int c=0;c<TAMANHO;c++){
-            if(matrizFonte[l][c]==0){
-                cheia=0;
+    int linha;
+    for(int linMax=0;linMax<4;linMax++){
+        for(int l=TAMANHO-1;l>0;l--){
+            cheia=1;
+            for(int c=0;c<TAMANHO;c++){
+                if(matrizFonte[l][c]==0){
+                    cheia=0;
+                    break;
+                }
+            }
+            if(cheia==1){
+                linha=l;
                 break;
             }
         }
         if(cheia==1){
             for(int c=0;c<TAMANHO;c++){
-                matrizFonte[l][c]=0;
+                matrizFonte[linha][c]=0;
             }
-            for(int i=l;i>0;i--){
-                for(int j=0;j<TAMANHO;j++){
-                    matrizFonte[l][j]=matrizFonte[l-1][j];
-                    matrizFonte[l-1][j]=0;
+            for(int l=linha;l>0;l--){
+                for(int c=0;c<TAMANHO;c++){
+                    matrizFonte[l][c]=matrizFonte[l-1][c];
                 }
             }
         }
@@ -233,4 +239,12 @@ void matrizProvisoria(peca pecaAtual, int pecaMatriz[4][8], int ord){
             copiaMatriz(4, 8, pecaMatriz, pecaAtual.grid4);
         break;
     }
+}
+int gameover(int matrizFonte[TAMANHO][TAMANHO]){
+    for(int c=0;c<TAMANHO;c++){
+        if(matrizFonte[0][c]<0){
+            return 1;
+        }
+    }
+    return 0;
 }
