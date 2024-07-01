@@ -80,8 +80,10 @@ int main() {
     while(fechar==0){
         //alteração de estados do jogo de acordo com a variável game
         switch(game){
+
             //menu
-            case -1: 
+            case -1:
+                //título e texto
                 titlePos=meio-40;
                 titleAlt=((meio*2)/1.7)/4-15;
                 attron(COLOR_PAIR(colors[(0+colorMod)%7]));
@@ -129,7 +131,7 @@ int main() {
                 mvaddstr(26+titleAlt, 0+titlePos,"Por: Arthur Davel e Hugo Freitas");
                 mvaddstr(27+titleAlt, 0+titlePos,"");//reposiciona o ponteiro
                 refresh();
-                usleep(300*1000);
+                usleep(300*1000); //taxa de atualização
                 if(meio!=stdscr->_maxx/2){ //recalcula a posição de impressão na tela se o tamanho da janela for alterada
                     clear();
                     meio = stdscr->_maxx/2;
@@ -138,6 +140,7 @@ int main() {
                 }
                 colorMod++;
                 colorMod%=7;
+                //opções
                 timeout(1);
                 ch = getch();
                 switch(ch){
@@ -155,6 +158,7 @@ int main() {
                     break;
                 }
             break;
+
             //jogo
             case 1:
                 if(reset==0){   //reseta o tabuleiro
@@ -304,6 +308,7 @@ int main() {
                 }
                 mostraTabuleiro(matrizFonte, startPos, startAlt, pontos, level, pecas[proxPeca], temTroca, pecas[trocarPeca], highscore, game);   
             break;
+
             //acabou de perder
             case 0:
                 if(meio!=stdscr->_maxx/2){
@@ -324,6 +329,7 @@ int main() {
                 reset=0;
                 game=2;
             break;
+
             //game over
             case 2:
                 titlePos=meio-31;
@@ -363,8 +369,8 @@ int main() {
                     break;
                 }
             break;
-        }//fecha o switch
-    }//fecha o while
-    endwin();             // Finaliza o ncurses
+        }                   //fecha o switch
+    }                       //fecha o while
+    endwin();               // Finaliza o ncurses
     return 0;
-}//fecha a main
+}                           //fecha a main
