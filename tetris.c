@@ -4,19 +4,21 @@
 #include <locale.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "libtetris.h"
+#include "libtetris.h" //biblioteca própria
+
+//cores personalizadas para o ncurses
 #define COLOR_ORANGE 8
 #define COLOR_GRAY 9
-int ch=0;
-int game=-1, fechar=0;
 
 int main() {
-    int matrizFonte[TAMANHO][TAMANHO] = {0};
-    peca pecas[8];
-    srand(time(NULL));
-    setlocale(LC_ALL, "");
+    int matrizFonte[TAMANHO][TAMANHO] = {0}; //matriz do tabuleiro
+    peca pecas[8]; //array de structs das peça
+    srand(time(NULL)); //randomiza a seed de acordo co o tempo
+    setlocale(LC_ALL, "");  //permite o uso de caracteres especiais
     initscr();              // Inicia a janela ncurses
-    curs_set(0);
+    curs_set(0); //esconde o cursor
+
+    //configuração das cores
     start_color();
     init_color(COLOR_ORANGE, 1000, 350, 0);
     init_color(COLOR_GRAY, 300, 300, 300);
@@ -28,35 +30,55 @@ int main() {
     init_pair(6, COLOR_RED, COLOR_BLACK);
     init_pair(7, COLOR_GREEN, COLOR_BLACK);
     init_pair(8, COLOR_GRAY, COLOR_BLACK);
+
     cbreak();               // Desabilita o buffer da linha
     noecho();               // Não exibe a tecla pressionada
     keypad(stdscr, TRUE);   // Habilita a captura de teclas especiais
     geraPecas(pecas);       // Gera e salva as peças no vetor
 
-    //pad == padrao
-    int pecaSorteada = rand() % 7, colh = 0, colv =0, colg=0;
-    int proxPeca =  rand() % 7;
-    int temTroca=0;
-    int trocarPeca = 0;
-    int ativarTroca=1;
+    int game=-1, fechar=0; //controle de estados do jogo
+    int ch=0; //tecla pressionada
+    
+    //declaração das peças
+    int pecaSorteada = rand() % 7; 
+    int proxPeca =  rand() % 7;       
+    int temTroca=0;              
+    int trocarPeca = 0;            
+    int ativarTroca=1;              
+    int tempPeca;   
+
+    //controle das peças
     int nextOr=2, counter=0;
     int xpad = 6, ypad = -1;
     int x = xpad, y = ypad;
     int xinicial, yinicial;
-    int tempPeca;
+
+    //colisões
+    int colh = 0, colv =0, colg=0;
+
+    //pontuação
     int pontos=0, level=1, pontosPorLevel=1000;
     int highscore=0, novoHigh=0;
+
+    //delay
     int delayPad=300/level, delay=delayPad, delayFast=delayPad/20;
+
+    //posições para imprimir na tela
     int meio = stdscr->_maxx/2;
     int startPos=meio-11; //posicão x inicial do tabuleiro
-    int fonteAltDiff=15;
-    int startAlt=((meio*2)/1.7)/4-fonteAltDiff;
+    int fonteAltDiff=15; 
+    int startAlt=((meio*2)/1.7)/4-fonteAltDiff; //posicão y inicial do tabuleiro
     int titleAlt=5;
     int titlePos=meio-40;
+
+    //controle das cores no menu inicial
     int colors[7]={1,5,3,7,2,4,6};
     int colorMod=0;
     int reset=1;
+
+    //repetição principal
     while(fechar==0){
+        //alteração de estados do jogo de acordo com a variável game
         switch(game){
             //menu
             case -1: 
@@ -108,7 +130,7 @@ int main() {
                 mvaddstr(27+titleAlt, 0+titlePos,"");//reposiciona o ponteiro
                 refresh();
                 usleep(300*1000);
-                if(meio!=stdscr->_maxx/2){
+                if(meio!=stdscr->_maxx/2){ //recalcula a posição de impressão na tela se o tamanho da janela for alterada
                     clear();
                     meio = stdscr->_maxx/2;
                     startPos=meio-11;
