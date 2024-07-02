@@ -2,6 +2,10 @@
 #define _LIBTETRIS_H
 
 #include <stdio.h>
+#include <ncurses.h>
+#include <unistd.h>
+#include <stdlib.h>
+
 #define TAMANHO 20
 
 typedef struct peca{ // Guarda o grid de cada peça
@@ -17,13 +21,13 @@ void imprimePeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int co
 void limpaPeca(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef);
 static struct peca configuraPeca(int inicioLinUm, int fimLinUm, int inicioLinDois, int fimLinDois, int idPeca);
 void geraPecas(peca pecasGeradas[]);
-void copiaMatriz(int l, int c, int matrizCopia[l][c], int matrizEnt[l][c]);
-int colisao(peca pecaAtual, int mov, int hor_ver, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx);
-int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], int yy, int xx);
+static void copiaMatriz(int l, int c, int matrizCopia[l][c], int matrizEnt[l][c]);
+int colisao(peca pecaAtual, int mov, int hor_ver, int matrizFonte[TAMANHO][TAMANHO], int linRef, int colRef);
+int colGiro(peca pecaAtual, int orientacao, int matrizFonte[TAMANHO][TAMANHO], int linRef, int colRef);
 int limpar(int matrizFonte[TAMANHO][TAMANHO]);
-void matrizProvisoria(peca pecaAtual, int pecaMatriz[4][8], int ord);
+static void matrizProvisoria(peca pecaAtual, int pecaMatriz[4][8], int orientacao);
 int gameover(int matrizFonte[TAMANHO][TAMANHO]);
-void imprimePreview(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int yy, int xx);
-void limpaPreview(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int yy, int xx);
+void imprimePreview(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef);
+void limpaPreview(int fonte[TAMANHO][TAMANHO], peca pecaAtual, int linRef, int colRef);
 
 #endif

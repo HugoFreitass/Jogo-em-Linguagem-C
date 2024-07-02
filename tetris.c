@@ -1,9 +1,6 @@
 #include <stdio.h>
-#include <ncurses.h>
 #include <time.h>
 #include <locale.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include "libtetris.h" //biblioteca própria
 
 //cores personalizadas para o ncurses
@@ -48,7 +45,7 @@ int main() {
     int tempPeca;   
 
     //controle das peças
-    int nextOr=2, counter=0;
+    int nextOr=2, contador=0;
     int xpad = 6, ypad = -1;
     int x = xpad, y = ypad;
     int xinicial, yinicial;
@@ -181,7 +178,7 @@ int main() {
                     startAlt=((meio*2)/1.7)/4-fonteAltDiff;
                     reset=1;
                 }
-                counter=0;
+                contador=0;
                 imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
                 mostraTabuleiro(matrizFonte, startPos, startAlt, pontos, level, pecas[proxPeca], temTroca, pecas[trocarPeca], highscore, game);
                 while(1){
@@ -261,8 +258,8 @@ int main() {
                     imprimePeca(matrizFonte, pecas[pecaSorteada], y, x, 1);
                     mostraTabuleiro(matrizFonte, startPos, startAlt, pontos, level, pecas[proxPeca], temTroca, pecas[trocarPeca], highscore, game);
                     sleep(0.001);
-                    counter+=1;
-                    if(counter>=delay){
+                    contador+=1;
+                    if(contador>=delay){
                         break;
                     }
                 }
